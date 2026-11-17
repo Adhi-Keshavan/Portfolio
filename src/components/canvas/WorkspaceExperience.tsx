@@ -13,7 +13,7 @@ export default function WorkspaceExperience({ selected, onSelect, onReady, reduc
     return () => document.removeEventListener('visibilitychange', update)
   }, [])
   return <div className="workspace-canvas" onPointerMove={event => { const rect = event.currentTarget.getBoundingClientRect(); pointer.current.x = (event.clientX - rect.left) / rect.width * 2 - 1; pointer.current.y = (event.clientY - rect.top) / rect.height * 2 - 1 }} onPointerLeave={() => { pointer.current.x = 0; pointer.current.y = 0 }}>
-    <Canvas shadows dpr={quality === 'high' ? [1, 1.5] : 1} frameloop={visible ? 'always' : 'never'} camera={{ position: [9.5, 8.1, 13], fov: 41, near: .1, far: 60 }} gl={{ antialias: quality === 'high', powerPreference: 'high-performance' }} onCreated={onReady}>
+    <Canvas shadows dpr={quality === 'high' ? [1, 2] : 1} frameloop={visible ? 'always' : 'never'} camera={{ position: [9.5, 8.1, 13], fov: 41, near: .1, far: 60 }} gl={{ antialias: quality === 'high', powerPreference: 'high-performance' }} onCreated={onReady}>
       <Suspense fallback={null}><WorkspaceScene selected={selected} onSelect={onSelect} pointer={pointer} reducedMotion={reducedMotion} onQualityChange={setQuality} /></Suspense>
     </Canvas>
   </div>
