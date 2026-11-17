@@ -87,13 +87,12 @@ export default function Home() {
           <p className="hero-description">Final-year CSBS student building useful software, thoughtful interfaces, reliable backend systems, and data-led solutions.</p>
           <div className="hero-availability"><span className="live-dot" /> OPEN TO INTERNSHIPS & ENTRY-LEVEL ROLES</div>
           <div className="hero-actions"><button type="button" className="button button-primary" onClick={() => select('monitor')}>Explore my work <ArrowUpRight size={17} /></button><ResumeAction className="button button-secondary" /></div>
-          <div className="hero-side-note"><span>THE DESK IS THE NAVIGATION.</span><span>EVERY OBJECT OPENS A PART OF MY WORK.</span></div>
+          <div className="hero-side-note"><div className="hero-side-note-copy"><span>THE DESK IS THE NAVIGATION.</span><span>EVERY OBJECT OPENS A PART OF MY WORK.</span></div><a className="hero-scroll" href="#about">SCROLL TO EXPLORE <ArrowDown size={15} /></a></div>
         </div>
         <WorkspaceStage selected={selected} onSelect={select} />
         <p className="sr-only">Select the monitor for projects, keyboard for skills, notebook for about and education, or phone for contact. All information is also available in the sections below.</p>
         <WorkspacePanel selected={selected} onClose={clear} />
         <div className="object-dock" aria-label="Explore workspace objects">{workspaceObjects.map(object => <button key={object.id} type="button" className={selected === object.id ? 'object-dock-item active' : 'object-dock-item'} onClick={() => select(object.id)} aria-pressed={selected === object.id}><span className="dock-number">{object.number}</span><span><strong>{object.title}</strong><small>{object.hint}</small></span><ArrowUpRight size={15} /></button>)}<button className="dock-overview" type="button" onClick={clear} disabled={!selected} aria-label="Return to workstation overview"><RotateCcw size={16} /><span>Overview</span></button></div>
-        <a className="hero-scroll" href="#about">SCROLL TO EXPLORE <ArrowDown size={15} /></a>
       </section>
       <PortfolioSections reducedMotion={!!reducedMotion} />
     </main>
