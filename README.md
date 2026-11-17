@@ -1,38 +1,34 @@
-# Adhi Keshavan B — Engineering Portfolio
+# Inside My Workspace
 
-A React and Three.js portfolio organized around the **Engineering Nexus**. The page keeps every section readable in HTML while the 3D sculpture adds a connected scroll narrative on capable desktop devices.
+An interactive developer portfolio for Adhi Keshavan B. On capable desktop devices, visitors explore a procedurally modeled workstation: monitor for projects, keyboard for skills, notebook for background, and phone for contact. Every panel is HTML and the same information appears in ordinary scrollable sections.
 
-## Run locally
+## Run and check
 
 ```bash
 npm ci
 npm run dev
-```
-
-## Validate
-
-```bash
 npm run lint
 npm run build
 ```
 
-The production build is written to `dist/`.
+Vite writes the production site to `dist/`.
 
-## Personal details and assets
+## Architecture
 
-Edit `src/data/portfolio.ts` to update the name, links, skills, project facts, and case studies. Project claims were checked against the connected GitHub repositories. The three NoviTech R&D internships are supported by certificates in the parent workspace.
+- `src/data/portfolio.ts` keeps personal details, verified skills, object labels, and project case studies editable in one typed file.
+- `src/components/canvas/workspace/` contains the desk, interactive objects, procedural textures, and camera controller.
+- `src/components/workspace/` contains the accessible panels, static workstation fallback, and scrollable portfolio sections.
+- `src/hooks/useWorkspaceSelection.ts` owns the selected object. Switching objects immediately changes the camera destination, cancelling the prior focus motion.
+- `src/pages/ProjectDetail.tsx` renders dedicated case-study routes at `/projects/<slug>`.
 
-No résumé PDF was provided. Set `person.resume` to `/resume.pdf` after placing the final résumé at `public/resume.pdf`. Until then, the résumé links open an email request. `person.email` and `person.linkedin` are sourced from the author's GitHub profile README and can be updated in the same data file.
+The scene lazy loads after the initial HTML. It uses instanced keyboard keys, shared materials and geometries where practical, capped adaptive DPR, one shadow casting key light, and pauses rendering when the tab is hidden. Mobile, reduced-motion, low-powered, and WebGL-unavailable devices use the interactive CSS workstation and normal vertical content.
 
-Project preview artwork is a visual interpretation of documented source, explicitly labeled as such. Add an actual screenshot under `public/projects/` and set `screenshot` and `screenshotAlt` for its project record when available. No live demo URLs are shown without a verified deployment.
+## Content and assets
 
-## Performance and accessibility
+Project descriptions are grounded in the linked GitHub repositories. The PayReady India prototype provides KYC preparation guidance; it does not make verification decisions. Repository screenshots were not available. The project cards label their current visuals as interpretations; replace them with real images by adding files under `public/projects/` and setting each project's `screenshot` and `screenshotAlt` fields in `src/data/portfolio.ts`.
 
-- The WebGL scene is lazy loaded after idle time and omitted on narrow screens, reduced-motion systems, and devices reporting four or fewer CPU cores.
-- The scene uses a capped device pixel ratio and a small set of reusable geometries and materials. Rendering pauses when the tab is hidden.
-- Native scrolling, keyboard-accessible project navigation, visible focus states, semantic sections, and a static CSS sculpture are available without WebGL.
-- GSAP ScrollTrigger only controls the 3D journey state; Motion for React handles small UI transitions.
+`public/resume.pdf` is an interim one-page résumé generated only from verified portfolio and certificate details. The source is `scripts/generate_resume.py`. Replace the PDF with your final résumé when you provide it; the download links already point to `/resume.pdf`. Update email and professional links in `src/data/portfolio.ts` if needed.
 
 ## Deploy
 
-Build with `npm run build` and publish `dist/`. `public/_redirects` supports Netlify SPA routes; `vercel.json` supports Vercel SPA routes. Each project case study has a direct URL at `/projects/<slug>`.
+For Netlify, build with `npm run build` and publish `dist/`. `public/_redirects` sends case-study routes to the SPA entry point. For Vercel, use the same build and output directory; `vercel.json` provides the route fallback. No environment variables or server service are required.

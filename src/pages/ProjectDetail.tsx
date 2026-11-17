@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowUpRight, ExternalLink, Github } from 'lucide-react'
 import { Navigation } from '../components/layout/Navigation'
 import { ProjectPreview } from '../components/projects/ProjectPreview'
 import { person, type Project } from '../data/portfolio'
+import './ProjectDetail.css'
 
 export default function ProjectDetail({ project }: { project: Project }) {
   useEffect(() => {

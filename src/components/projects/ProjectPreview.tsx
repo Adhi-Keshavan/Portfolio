@@ -1,9 +1,10 @@
 import type { Project } from '../../data/portfolio'
+import './ProjectPreview.css'
 
 export function ProjectPreview({ project, large = false }: { project: Project; large?: boolean }) {
   if (project.screenshot) return <img className="project-screenshot" src={project.screenshot} alt={project.screenshotAlt || `${project.title} project screenshot`} loading="lazy" />
 
-  return <div className={`project-preview project-preview--${project.preview}${large ? ' project-preview--large' : ''}`} aria-label={`${project.title} visual overview`} role="img">
+  return <div className={`project-preview project-preview--${project.preview}${large ? ' project-preview--large' : ''}`} aria-label={`Illustrative preview of ${project.title}; source screenshot pending`} role="img">
     <div className="preview-chrome"><span /><span /><span /><b>{project.preview === 'cricket' ? 'ANALYSIS / REPORT' : project.preview === 'payready' ? 'PAYREADY / WORKSPACE' : 'AITIZEN / REALM'}</b></div>
     {project.preview === 'aitizen' && <div className="preview-aitizen">
       <div className="preview-orb"><i /><i /><i /><em /></div>

@@ -31,8 +31,15 @@ export const person = {
   email: 'adhikeshavan050505@gmail.com',
   github: 'https://github.com/Adhi-Keshavan',
   linkedin: 'https://www.linkedin.com/in/adhi-keshavan',
-  resume: null as string | null,
+  resume: '/resume.pdf' as string | null,
 }
+
+export const workspaceObjects = [
+  { id: 'monitor', number: '01', title: 'Projects', hint: 'Explore the work', description: 'Real projects, decisions, and source code.' },
+  { id: 'keyboard', number: '02', title: 'Skills', hint: 'Inspect the toolkit', description: 'Languages, frameworks, and engineering tools.' },
+  { id: 'notebook', number: '03', title: 'About', hint: 'Read the story', description: 'Background, education, and how I think.' },
+  { id: 'phone', number: '04', title: 'Contact', hint: 'Start a conversation', description: 'Email, professional profiles, and résumé.' },
+] as const
 
 export const skillGroups = [
   { name: 'Programming', items: ['Python', 'Java', 'JavaScript', 'TypeScript'] },
@@ -67,8 +74,8 @@ export const projects: Project[] = [
     slug: 'payready-india',
     number: '02',
     title: 'PayReady India',
-    eyebrow: 'Hackathon prototype · full stack',
-    summary: 'A merchant onboarding preparation guide with checklists, source-linked answers, and a privacy-aware document lab.',
+    eyebrow: 'AI-assisted KYC readiness · full stack',
+    summary: 'A merchant onboarding and KYC preparation guide with checklists, source-linked answers, optional AI guidance, and a privacy-aware document lab.',
     problem: 'Merchants need a clear way to prepare for PayPal India onboarding without confusing preparation guidance with an official KYC decision.',
     approach: 'Separate readiness guidance from account verification. The prototype uses checklists, verified sources, optional grounded answers, and synthetic or redacted sample inputs.',
     architecture: ['React and Vite frontend', 'FastAPI endpoints for checklists, scores, and assistant answers', 'Verified knowledge base with official source links', 'Optional Gemini and PayPal Sandbox integrations stay server-side'],

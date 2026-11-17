@@ -5,7 +5,7 @@ import { projects } from './data/portfolio'
 import './App.css'
 
 function App() {
-  const [locationKey, setLocationKey] = useState(window.location.pathname + window.location.search)
+  const [, setLocationKey] = useState(window.location.pathname + window.location.search)
   const navigate = useCallback((url: string, scroll = true) => {
     window.history.pushState({}, '', url)
     window.dispatchEvent(new Event('portfolio:navigate'))
@@ -31,7 +31,7 @@ function App() {
   const slug = window.location.pathname.match(/^\/projects\/([^/]+)\/?$/)?.[1]
   const project = projects.find(item => item.slug === slug)
   if (slug) return project ? <ProjectDetail project={project} /> : <div className="not-found"><h1>Project not found.</h1><a href="/#projects">Return to projects →</a></div>
-  return <Home locationKey={locationKey} navigate={navigate} />
+  return <Home />
 }
 
 export default App
