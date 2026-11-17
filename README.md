@@ -1,102 +1,38 @@
-# Advanced 3D Portfolio Website
+# Adhi Keshavan B — Engineering Portfolio
 
-A stunning, interactive 3D portfolio website built with React, Three.js, and modern animations. Features an immersive 3D scene with interactive elements, smooth scroll animations, and a professional design.
+A React and Three.js portfolio organized around the **Engineering Nexus**. The page keeps every section readable in HTML while the 3D sculpture adds a connected scroll narrative on capable desktop devices.
 
-## 🚀 Features
+## Run locally
 
-- **Interactive 3D Scene** - Powered by Three.js with rotating torus knots, floating spheres, and particle effects
-- **Smooth Animations** - Built with Framer Motion for beautiful page transitions
-- **Responsive Design** - Fully responsive layout that works on all devices
-- **Modern UI** - Gradient backgrounds, glassmorphism effects, and glowing elements
-- **Portfolio Showcase** - Display your projects with custom styling
-- **Contact Form** - Functional contact section with form handling
-- **Scroll Effects** - Parallax scrolling and scroll-triggered animations
-
-## 🛠️ Technologies Used
-
-- **React** - UI framework
-- **Three.js** - 3D graphics library
-- **React Three Fiber** - React renderer for Three.js
-- **Drei** - Useful helpers for React Three Fiber
-- **Framer Motion** - Animation library
-- **GSAP** - Advanced animations
-- **TypeScript** - Type safety
-- **Vite** - Build tool and dev server
-
-## 📦 Installation
-
-1. Install dependencies:
 ```bash
-npm install
-```
-
-2. Start the development server:
-```bash
+npm ci
 npm run dev
 ```
 
-3. Open your browser and navigate to:
-```
-http://localhost:5173
-```
+## Validate
 
-## 🎨 Quick Start
-
-Simply run the development server and the 3D portfolio will be live in your browser. The scene features:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run lint
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The production build is written to `dist/`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Personal details and assets
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Edit `src/data/portfolio.ts` to update the name, links, skills, project facts, and case studies. Project claims were checked against the connected GitHub repositories. The three NoviTech R&D internships are supported by certificates in the parent workspace.
+
+No résumé PDF was provided. Set `person.resume` to `/resume.pdf` after placing the final résumé at `public/resume.pdf`. Until then, the résumé links open an email request. `person.email` and `person.linkedin` are sourced from the author's GitHub profile README and can be updated in the same data file.
+
+Project preview artwork is a visual interpretation of documented source, explicitly labeled as such. Add an actual screenshot under `public/projects/` and set `screenshot` and `screenshotAlt` for its project record when available. No live demo URLs are shown without a verified deployment.
+
+## Performance and accessibility
+
+- The WebGL scene is lazy loaded after idle time and omitted on narrow screens, reduced-motion systems, and devices reporting four or fewer CPU cores.
+- The scene uses a capped device pixel ratio and a small set of reusable geometries and materials. Rendering pauses when the tab is hidden.
+- Native scrolling, keyboard-accessible project navigation, visible focus states, semantic sections, and a static CSS sculpture are available without WebGL.
+- GSAP ScrollTrigger only controls the 3D journey state; Motion for React handles small UI transitions.
+
+## Deploy
+
+Build with `npm run build` and publish `dist/`. `public/_redirects` supports Netlify SPA routes; `vercel.json` supports Vercel SPA routes. Each project case study has a direct URL at `/projects/<slug>`.
