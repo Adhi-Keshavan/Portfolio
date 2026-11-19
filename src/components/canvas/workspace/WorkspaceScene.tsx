@@ -13,7 +13,7 @@ import { Decor } from './Decor'
 import { Lamp } from './Lamp'
 import type { Theme } from '../../../store/workspaceStore'
 
-export function WorkspaceScene({ selected, scrollFocus, onSelect, pointer, reducedMotion, onQualityChange, theme, lampOn, onToggleLamp }: { selected: WorkspaceObject | null; scrollFocus: WorkspaceObject | null; onSelect: (object: WorkspaceObject) => void; pointer: React.RefObject<{ x: number; y: number }>; reducedMotion: boolean; onQualityChange: (quality: 'low' | 'high') => void; theme: Theme; lampOn: boolean; onToggleLamp: () => void }) {
+export function WorkspaceScene({ selected, scrollFocus, onSelect, onFocusArrived, pointer, reducedMotion, onQualityChange, theme, lampOn, onToggleLamp }: { selected: WorkspaceObject | null; scrollFocus: WorkspaceObject | null; onSelect: (object: WorkspaceObject) => void; onFocusArrived: (object: WorkspaceObject) => void; pointer: React.RefObject<{ x: number; y: number }>; reducedMotion: boolean; onQualityChange: (quality: 'low' | 'high') => void; theme: Theme; lampOn: boolean; onToggleLamp: () => void }) {
   const [hovered, setHovered] = useState<WorkspaceObject | null>(null)
   const [lampHovered, setLampHovered] = useState(false)
   const ambientAccent = useRef<THREE.PointLight>(null)
@@ -41,7 +41,7 @@ export function WorkspaceScene({ selected, scrollFocus, onSelect, pointer, reduc
     <Phone active={selected === 'phone'} hovered={hovered === 'phone'} onSelect={() => onSelect('phone')} onHover={hover('phone')} />
     <Decor theme={theme} />
     <Lamp on={lampOn} theme={theme} onToggle={onToggleLamp} onHover={setLampHovered} />
-    <CameraController selected={selected} scrollFocus={scrollFocus} pointer={pointer} reducedMotion={reducedMotion} />
+    <CameraController selected={selected} scrollFocus={scrollFocus} pointer={pointer} reducedMotion={reducedMotion} onFocusArrived={onFocusArrived} />
     <AdaptiveDpr pixelated={false} />
     <PerformanceMonitor onDecline={() => onQualityChange('low')} onIncline={() => onQualityChange('high')} />
   </>

@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { projects } from '../../../data/portfolio'
 
 function canvas(size: number, height = size) {
   const element = document.createElement('canvas')
@@ -33,41 +32,21 @@ export function createWoodTexture() {
 
 export function createMonitorTexture() {
   const { element, context: c } = canvas(2048, 1108)
-  c.fillStyle = '#171717'; c.fillRect(0, 0, 2048, 1108)
-  const glow = c.createRadialGradient(1570, 320, 0, 1570, 320, 1100)
-  glow.addColorStop(0, '#3b2d24'); glow.addColorStop(1, '#171717')
+  c.fillStyle = '#1b1b1b'; c.fillRect(0, 0, 2048, 1108)
+  const glow = c.createRadialGradient(1520, 430, 50, 1520, 430, 1200)
+  glow.addColorStop(0, '#78563d'); glow.addColorStop(.58, '#352920'); glow.addColorStop(1, '#1b1b1b')
   c.fillStyle = glow; c.fillRect(0, 0, 2048, 1108)
-  c.fillStyle = '#252525'; c.fillRect(0, 0, 2048, 112)
-  c.fillStyle = '#d97736'; c.font = '700 44px Arial'; c.fillText('AK.', 54, 75)
-  c.fillStyle = '#d6cec6'; c.font = '26px Arial'; c.fillText('THE LIVING WORKSPACE  /  PROJECTS', 240, 71)
-  c.fillStyle = '#24211e'; c.fillRect(0, 112, 330, 996)
-  ;['OVERVIEW', 'PROJECTS', 'SKILLS', 'ABOUT', 'CONTACT'].forEach((item, i) => {
-    if (i === 1) { c.fillStyle = '#6d432b'; c.fillRect(24, 208 + i * 95, 282, 68) }
-    c.fillStyle = i === 1 ? '#f5f3ee' : '#b1a49a'
-    c.font = '600 27px Arial'; c.fillText(item, 48, 254 + i * 95)
-  })
-  c.fillStyle = '#d97736'; c.font = '26px Arial'; c.fillText(`PROJECT EXPLORER  /  ${String(projects.length).padStart(2, '0')} WORKS`, 390, 180)
-  c.fillStyle = '#f5f3ee'; c.font = '700 72px Arial'; c.fillText('Selected work.', 390, 264)
-  c.fillStyle = '#c3b6ab'; c.font = '29px Arial'; c.fillText('Select the monitor to open project details and case studies.', 390, 316)
-  projects.forEach((project, i) => {
-    const x = 390
-    const y = 352 + i * 242
-    c.fillStyle = '#302a25'; c.fillRect(x, y, 1580, 224)
-    c.fillStyle = project.accent; c.fillRect(x, y, 8, 224)
-    c.fillStyle = '#c3aa95'; c.font = '25px Arial'; c.fillText(`PROJECT / ${project.number}`, x + 42, y + 47)
-    c.fillStyle = project.accent; c.font = '24px Arial'; c.fillText(project.stack.slice(0, 3).join('  ·  '), x + 780, y + 47)
-    c.fillStyle = '#f5f3ee'; c.font = '700 54px Arial'; c.fillText(project.title, x + 42, y + 112)
-    c.fillStyle = '#d0c5bb'; c.font = '29px Arial'
-    const words = project.summary.split(' ')
-    const lines: string[] = []
-    let line = ''
-    for (const word of words) {
-      const next = line ? `${line} ${word}` : word
-      if (c.measureText(next).width > 1450 && line) { lines.push(line); line = word } else line = next
-    }
-    if (line) lines.push(line)
-    lines.slice(0, 2).forEach((text, lineIndex) => c.fillText(text, x + 42, y + 159 + lineIndex * 36))
-  })
+  c.fillStyle = '#d97736'; c.fillRect(112, 118, 106, 8)
+  c.fillStyle = '#f4f1ea'; c.font = '700 65px Arial'; c.fillText('AK', 112, 210)
+  c.fillStyle = '#c6b6a9'; c.font = '28px Arial'; c.fillText('ADHI KESHAVAN B  /  SOFTWARE DEVELOPER', 112, 265)
+  c.fillStyle = '#f4f1ea'; c.font = '700 230px Arial'; c.fillText('DESK.OS', 102, 635)
+  c.fillStyle = '#dba575'; c.font = '32px Arial'; c.fillText('A personal digital workspace.', 112, 705)
+  c.strokeStyle = '#b9927366'; c.lineWidth = 2
+  c.beginPath(); c.moveTo(112, 788); c.lineTo(1936, 788); c.stroke()
+  c.fillStyle = '#d0c4ba'; c.font = '26px Arial'; c.fillText('PROJECTS     /     TERMINAL     /     ABOUT     /     SKILLS     /     CONTACT', 112, 848)
+  c.fillStyle = '#d97736'; c.font = '25px Arial'; c.fillText('SELECT THE MONITOR TO ENTER', 112, 1010)
+  c.strokeStyle = '#d97736'; c.lineWidth = 4; c.strokeRect(1660, 895, 260, 100)
+  c.fillStyle = '#f4f1ea'; c.font = '700 48px Arial'; c.fillText('ENTER', 1715, 961)
   const texture = new THREE.CanvasTexture(element)
   texture.colorSpace = THREE.SRGBColorSpace
   texture.anisotropy = 16

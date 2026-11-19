@@ -11,6 +11,7 @@ export type Project = {
   contribution: string
   process: string
   challenges: string
+  learning: string
   result: string
   repository: string
   demo?: string
@@ -66,6 +67,7 @@ export const projects: Project[] = [
     contribution: 'The project credits Adhi with 3D modeling, Blender assets, and shaders within a four-person team.',
     process: 'The cover page is structured as eight connected chapters, from the hero through project specifications and team credits.',
     challenges: 'Making high-fidelity 3D assets legible within a browser narrative while keeping the project explanation readable.',
+    learning: 'The visual journey works best when each 3D scene has a clear narrative purpose and the accompanying explanation stays readable.',
     result: 'A published source repository for the project cover page. The repository describes the broader autonomous-agent system as a concept; this case study covers the implemented web experience.',
     repository: 'https://github.com/Adhi-Keshavan/Aitizen-Realm-Cover-Page',
     accent: '#d97736',
@@ -84,6 +86,7 @@ export const projects: Project[] = [
     contribution: 'The connected repository contains the frontend, backend, knowledge base, API tests, and demo documentation. Individual team attribution is not documented.',
     process: 'The foundation was checked with backend unit tests, frontend lint and build, and browser flows for checklist progress and connection recovery.',
     challenges: 'Keeping guidance grounded in official sources, rejecting sensitive values, and making the Sandbox payment demo visibly separate from KYC.',
+    learning: 'A readiness guide needs to keep source-backed preparation separate from any claim of official verification.',
     result: 'A working local prototype. It does not access PayPal accounts, submit documents, or make verification decisions.',
     repository: 'https://github.com/Adhi-Keshavan/Paypal/tree/main/paypal-kyc-assistant',
     accent: '#ca8a58',
@@ -102,6 +105,7 @@ export const projects: Project[] = [
     contribution: 'The repository documents the analysis pipeline, data-quality audit, pressure model, descriptive comparisons, and validation reports.',
     process: 'The work is organized in phases with written evidence for data validation, pressure coverage, batting, and bowling analysis.',
     challenges: 'The supplied extras data cannot recover exact runs for many deliveries. The model explicitly omits unsupported run-rate pressure and marks uncertain calculations.',
+    learning: 'Documenting missing inputs and uncertain calculations makes the analysis more reliable than filling gaps with unsupported estimates.',
     result: 'Phases 1–4 and their validation reports are present. Final player rankings have not been produced, so no ranking claims are made here.',
     repository: 'https://github.com/Adhi-Keshavan/RR_Hackathon',
     accent: '#b79570',

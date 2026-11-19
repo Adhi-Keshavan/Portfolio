@@ -3,10 +3,11 @@ import { person, projects, skillGroups } from '../../data/portfolio'
 import { useWorkspaceStore } from '../../store/workspaceStore'
 
 type Line = { prompt?: string; text: string }
-const help = ['help', 'about', 'skills', 'projects', 'projects list', 'projects open [project-id]', 'education', 'contact', 'resume', 'theme day', 'theme night', 'workspace', 'exit', 'clear']
+const help = ['help', 'about', 'skills', 'projects', 'projects list', 'projects open [project-id]', 'education', 'contact', 'resume', 'theme light', 'theme dark', 'workspace', 'exit', 'clear']
+const commands = ['help', 'about', 'skills', 'projects', 'projects list', 'projects open ', 'education', 'contact', 'resume', 'theme light', 'theme dark', 'workspace', 'exit', 'clear']
 
 export function Terminal() {
-  const [lines, setLines] = useState<Line[]>([{ text: 'The Living Workspace terminal. Type help to see supported commands.' }])
+  const [lines, setLines] = useState<Line[]>([{ text: 'DESK.OS terminal. Type help to see supported commands. Use Tab to complete.' }])
   const [input, setInput] = useState('')
   const [history, setHistory] = useState<string[]>([])
   const [historyIndex, setHistoryIndex] = useState(0)
@@ -35,11 +36,8 @@ export function Terminal() {
       else output.push(`Project not found. Try: ${projects.map(item => item.slug).join(', ')}`)
     }
     else if (command === 'contact') { output.push(`Email: ${person.email}`, `GitHub: ${person.github}`, `LinkedIn: ${person.linkedin}`); openApp('contact') }
-    else if (command === 'resume') {
-      if (person.resume) { const link = document.createElement('a'); link.href = person.resume; link.download = 'Adhi-Keshavan-Resume.pdf'; link.click(); output.push('Downloading résumé.') }
-      else output.push('Résumé is not available yet. Use contact for an email address.')
-    }
-    else if (command === 'theme day' || command === 'theme night') { const theme = command.split(' ')[1] as 'day' | 'night'; setTheme(theme); output.push(`Workspace theme set to ${theme}.`) }
+    else if (command === 'resume') { openApp('resume'); output.push('Opened Résumé Viewer.') }
+    else if (['theme day', 'theme light', 'theme night', 'theme dark'].includes(command)) { const theme = command.endsWith('day') || command.endsWith('light') ? 'day' : 'night'; setTheme(theme); output.push(`Workspace theme set to ${theme === 'day' ? 'light' : 'dark'}.`) }
     else if (command === 'workspace' || command === 'exit') { setMode('workspace'); output.push('Returned to the workspace.') }
     else output.push(`Unknown command: ${raw.trim()}`, 'Type help for available commands.')
     setLines(items => [...items, { prompt: raw, text: '' }, ...output.map(text => ({ text }))])
@@ -48,6 +46,7 @@ export function Terminal() {
     if (event.key === 'Enter') { execute(input); setInput('') }
     if (event.key === 'ArrowUp') { event.preventDefault(); const next = Math.max(0, historyIndex - 1); setHistoryIndex(next); setInput(history[next] ?? '') }
     if (event.key === 'ArrowDown') { event.preventDefault(); const next = Math.min(history.length, historyIndex + 1); setHistoryIndex(next); setInput(history[next] ?? '') }
+    if (event.key === 'Tab') { const matches = commands.filter(item => item.startsWith(input.toLowerCase())); if (matches.length === 1) { event.preventDefault(); setInput(matches[0]) } }
   }
   return <div className="terminal" onClick={() => inputRef.current?.focus()}><div className="terminal-output" role="log" aria-live="polite">{lines.map((line, index) => line.prompt ? <p className="terminal-prompt" key={index}>adhi@workspace:~$ {line.prompt}</p> : <p key={index}>{line.text || '\u00a0'}</p>)}<div ref={bottomRef} /></div><label className="terminal-entry"><span>adhi@workspace:~$</span><input ref={inputRef} value={input} onChange={event => setInput(event.target.value)} onKeyDown={onKeyDown} spellCheck={false} autoComplete="off" autoCapitalize="off" aria-label="Terminal command" /></label></div>
 }

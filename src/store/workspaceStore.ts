@@ -1,8 +1,9 @@
 import { create } from 'zustand'
 
-export type DesktopApp = 'projects' | 'terminal' | 'about' | 'skills' | 'contact'
+export type DesktopApp = 'projects' | 'terminal' | 'about' | 'skills' | 'resume' | 'contact' | 'settings'
 export type WorkspaceObject = 'monitor' | 'keyboard' | 'notebook' | 'phone'
 export type Theme = 'day' | 'night'
+export type CameraPhase = 'intro' | 'overview' | 'object-focus' | 'monitor-transition' | 'desktop' | 'returning'
 export type DesktopWindowState = {
   app: DesktopApp
   x: number
@@ -16,16 +17,20 @@ export type DesktopWindowState = {
 
 type WorkspaceStore = {
   mode: 'workspace' | 'desktop'
+  cameraPhase: CameraPhase
   selected: WorkspaceObject | null
   theme: Theme
+  reducedMotion: boolean
   lampOn: boolean
   windows: DesktopWindowState[]
   topZ: number
   projectSlug: string | null
   setMode: (mode: 'workspace' | 'desktop') => void
+  setCameraPhase: (phase: CameraPhase) => void
   selectObject: (object: WorkspaceObject) => void
   clearObject: () => void
   setTheme: (theme: Theme) => void
+  setReducedMotion: (value: boolean) => void
   toggleLamp: () => void
   openApp: (app: DesktopApp) => void
   openProject: (slug: string) => void
@@ -41,30 +46,37 @@ type WorkspaceStore = {
 const initialTheme = (): Theme => {
   try { return localStorage.getItem('workspace-theme') === 'day' ? 'day' : 'night' } catch { return 'night' }
 }
+const initialReducedMotion = () => {
+  try { const saved = localStorage.getItem('workspace-reduced-motion'); return saved === null ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : saved === 'true' } catch { return false }
+}
 
 const defaultSize: Record<DesktopApp, [number, number]> = {
-  projects: [940, 650], terminal: [740, 490], about: [670, 540], skills: [700, 530], contact: [610, 510],
+  projects: [940, 650], terminal: [740, 490], about: [670, 540], skills: [700, 530], resume: [800, 650], contact: [610, 510], settings: [600, 510],
 }
 
 export const useWorkspaceStore = create<WorkspaceStore>((set, get) => ({
   mode: 'workspace',
+  cameraPhase: 'intro',
   selected: null,
   theme: initialTheme(),
+  reducedMotion: initialReducedMotion(),
   lampOn: true,
   windows: [],
   topZ: 1,
   projectSlug: null,
-  setMode: mode => set({ mode, ...(mode === 'workspace' ? { selected: null } : {}) }),
-  selectObject: selected => set({ selected }),
-  clearObject: () => set({ selected: null }),
+  setMode: mode => set({ mode, cameraPhase: mode === 'desktop' ? 'desktop' : 'returning', ...(mode === 'workspace' ? { selected: null } : {}) }),
+  setCameraPhase: cameraPhase => set({ cameraPhase }),
+  selectObject: selected => set({ selected, cameraPhase: selected === 'monitor' ? 'monitor-transition' : 'object-focus' }),
+  clearObject: () => set({ selected: null, cameraPhase: 'returning' }),
   setTheme: theme => { try { localStorage.setItem('workspace-theme', theme) } catch { /* storage may be disabled */ } set({ theme }) },
+  setReducedMotion: reducedMotion => { try { localStorage.setItem('workspace-reduced-motion', String(reducedMotion)) } catch { /* storage may be disabled */ } set({ reducedMotion }) },
   toggleLamp: () => set(state => ({ lampOn: !state.lampOn })),
   openApp: app => {
     const state = get()
     const z = state.topZ + 1
     const existing = state.windows.find(item => item.app === app)
     if (existing) {
-      set({ mode: 'desktop', topZ: z, windows: state.windows.map(item => item.app === app ? { ...item, minimized: false, z } : item) })
+      set({ mode: 'desktop', cameraPhase: 'desktop', topZ: z, windows: state.windows.map(item => item.app === app ? { ...item, minimized: false, z } : item) })
       return
     }
     const [defaultWidth, defaultHeight] = defaultSize[app]
@@ -73,7 +85,7 @@ export const useWorkspaceStore = create<WorkspaceStore>((set, get) => ({
     const offset = state.windows.length * 28
     const x = Math.max(12, Math.min((window.innerWidth - width) / 2 + offset, window.innerWidth - width - 12))
     const y = Math.max(55, Math.min((window.innerHeight - height) / 2 + offset, window.innerHeight - height - 65))
-    set({ mode: 'desktop', topZ: z, windows: [...state.windows, { app, x, y, width, height, z, minimized: false, maximized: false }] })
+    set({ mode: 'desktop', cameraPhase: 'desktop', topZ: z, windows: [...state.windows, { app, x, y, width, height, z, minimized: false, maximized: false }] })
   },
   openProject: slug => { set({ projectSlug: slug }); get().openApp('projects') },
   closeApp: app => set(state => ({ windows: state.windows.filter(item => item.app !== app) })),
