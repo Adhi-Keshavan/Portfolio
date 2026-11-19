@@ -37,7 +37,7 @@ Vite writes the production site to `dist/`. Open `/` for the workstation, `/quic
 
 Project descriptions are grounded in the linked repositories. PayReady India is a KYC preparation prototype; it does not make verification decisions. Genuine project screenshots are pending. Current previews are labeled as illustrations. Add images under `public/projects/`, then set `screenshot` and `screenshotAlt` (or `screenshots`) in `src/data/portfolio.ts`. The explorer enables its screenshot viewer when images are present.
 
-The desktop wallpaper is a native 3840 × 2160 image; two smaller editorial image studies decorate the desktop. Sources, dimensions, and generation prompts are documented in `ASSET_CREDITS.md`.
+The desktop wallpaper is a native 3840 × 2160 image; a transparent framed image made from two editorial studies decorates the desktop. Sources, dimensions, and generation prompts are documented in `ASSET_CREDITS.md`.
 
 `public/resume.pdf` is an interim one-page résumé generated from verified portfolio and certificate details. Its source is `scripts/generate_resume.py`. Replace it with the final résumé when available. Update the contact details in `src/data/portfolio.ts` if needed.
 
