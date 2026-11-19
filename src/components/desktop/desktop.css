@@ -45,8 +45,4 @@
 .desktop-wallpaper { background-image:linear-gradient(90deg,#171717dc 0%,#241e1abb 48%,#281d16a8 100%),url('/desktop/wallpaper-4k.jpg'); background-position:center; background-size:cover; }
 .desktop-environment--day .desktop-wallpaper { background-image:linear-gradient(90deg,#f5f3eec9 0%,#e9e2d6a6 54%,#ece5d8a8 100%),url('/desktop/wallpaper-4k.jpg'); }
 .desktop-wallpaper::after { opacity:.04; }
-.desktop-image-studies { position:absolute; top:40px; left:32vw; width:clamp(350px,22vw,440px); pointer-events:none; }
-.desktop-image-studies img { display:block; width:100%; height:auto; filter:drop-shadow(0 20px 24px #0009); }
-@media (max-width:900px) { .desktop-image-studies { top:38px; left:37vw; width:min(40vw,350px); } }
-@media (max-width:760px) { .desktop-image-studies { display:none; } }
 @media (max-width:760px) { .desktop-clock,.desktop-quick-view { display:none; }.desktop-launchpad { display:flex; flex-wrap:nowrap; overflow-x:auto; overscroll-behavior-inline:contain; scrollbar-width:thin; }.desktop-launchpad button { flex:0 0 72px; }.desktop-window,.desktop-window--maximized { top:155px !important; height:calc(100dvh - 209px) !important; }.settings-row { align-items:flex-start; flex-direction:column; gap:12px; }.resume-toolbar { padding:10px; }.resume-actions a { padding:7px; font-size:11px; } }

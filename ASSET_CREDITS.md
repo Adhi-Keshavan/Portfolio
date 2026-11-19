@@ -3,7 +3,7 @@
 - `public/desktop/wallpaper-4k.jpg` — 3840 × 2160 photo by [Yusuf P on Pexels](https://www.pexels.com/photo/black-desk-with-computer-near-window-with-blinds-11163177/). Used as the DESK.OS wallpaper with color overlays applied in CSS.
 - `public/desktop/plant-study.png` — 1672 × 941 original image generated with the built-in imagegen tool. Source for the framed artwork; not a project screenshot.
 - `public/desktop/keyboard-study.png` — 1672 × 941 original image generated with the built-in imagegen tool. Source for the framed artwork; not a project screenshot.
-- `public/desktop/framed-studies.png` — 1928 × 816 transparent composite generated with the built-in imagegen tool from the two study images. This is the framed artwork displayed on the desktop.
+- `public/desktop/framed-studies.png` — 1928 × 816 transparent composite generated with the built-in imagegen tool from the two study images. Saved as a standalone asset; not displayed on the desktop.
 
 ## Imagegen prompts
 
