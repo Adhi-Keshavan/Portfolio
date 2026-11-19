@@ -7,7 +7,7 @@ const items = [['About', 'about'], ['Projects', 'projects'], ['Skills', 'skills'
 export function Navigation({ active = '', detail = false }: { active?: string; detail?: boolean }) {
   const [open, setOpen] = useState(false)
   return <header className="site-header">
-    <a className="brand" href="/#home" aria-label="The Living Workspace, home"><span className="brand-symbol">A<span>K</span><i>.</i></span><span className="brand-name">THE LIVING<br /><b>WORKSPACE</b></span></a>
+    <a className="brand" href="/#home" aria-label="The Living Workspace, home"><span className="brand-symbol">A<span>K</span><i>.</i></span><span className="brand-name">THE LIVING <b>WORKSPACE</b></span></a>
     <nav className={open ? 'nav-links nav-links--open' : 'nav-links'} aria-label="Primary navigation">
       {items.map(([label, id]) => <a key={id} href={`/#${id}`} className={!detail && active === id ? 'nav-link nav-link--active' : 'nav-link'} onClick={() => setOpen(false)}>{label}</a>)}
       <a className="nav-resume" href={person.resume || `mailto:${person.email}?subject=Resume%20request`}{...(person.resume ? { download: true } : {})}>{person.resume ? 'Download résumé' : 'Request résumé'} <ArrowUpRight size={15} /></a>
