@@ -4,7 +4,7 @@ import type { WorkspaceObject } from '../../hooks/useWorkspaceSelection'
 import { WorkspaceScene } from './workspace/WorkspaceScene'
 import type { Theme } from '../../store/workspaceStore'
 
-export default function WorkspaceExperience({ selected, scrollFocus, onSelect, onFocusArrived, onReady, reducedMotion, theme, lampOn, onToggleLamp, paused }: { selected: WorkspaceObject | null; scrollFocus: WorkspaceObject | null; onSelect: (object: WorkspaceObject) => void; onFocusArrived: (object: WorkspaceObject) => void; onReady: () => void; reducedMotion: boolean; theme: Theme; lampOn: boolean; onToggleLamp: () => void; paused: boolean }) {
+export default function WorkspaceExperience({ selected, scrollFocus, onSelect, onFocusArrived, onReady, reducedMotion, theme, lampOn, onToggleLamp, paused }: { selected: WorkspaceObject | null; scrollFocus: WorkspaceObject | null; onSelect: (object: WorkspaceObject) => void; onFocusArrived: (object: WorkspaceObject, frame?: { top: number; right: number; bottom: number; left: number }) => void; onReady: () => void; reducedMotion: boolean; theme: Theme; lampOn: boolean; onToggleLamp: () => void; paused: boolean }) {
   const [visible, setVisible] = useState(!document.hidden)
   const [quality, setQuality] = useState<'low' | 'high'>('high')
   const pointer = useRef({ x: 0, y: 0 })

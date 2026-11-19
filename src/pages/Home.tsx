@@ -25,7 +25,7 @@ function canUseWebGL(reducedMotion: boolean) {
   try { return !!document.createElement('canvas').getContext('webgl2') } catch { return false }
 }
 
-function WorkspaceStage({ selected, onSelect, onFocusArrived, onReadyChange }: { selected: WorkspaceObject | null; onSelect: (object: WorkspaceObject) => void; onFocusArrived: (object: WorkspaceObject) => void; onReadyChange: (ready: boolean) => void }) {
+function WorkspaceStage({ selected, onSelect, onFocusArrived, onReadyChange }: { selected: WorkspaceObject | null; onSelect: (object: WorkspaceObject) => void; onFocusArrived: (object: WorkspaceObject, frame?: { top: number; right: number; bottom: number; left: number }) => void; onReadyChange: (ready: boolean) => void }) {
   const [enabled, setEnabled] = useState(false)
   const [ready, setReady] = useState(false)
   const theme = useWorkspaceStore(state => state.theme)
@@ -55,17 +55,24 @@ export default function Home() {
   const theme = useWorkspaceStore(state => state.theme)
   const reducedMotion = useWorkspaceStore(state => state.reducedMotion)
   const openApp = useWorkspaceStore(state => state.openApp)
+  const setMode = useWorkspaceStore(state => state.setMode)
   const [sceneReady, setSceneReady] = useState(false)
   const [desktopOrigin, setDesktopOrigin] = useState({ top: 80, right: 0, bottom: 100, left: 0 })
   const handleSelect = (object: WorkspaceObject) => {
     if (object === 'monitor') {
-      const rect = document.querySelector('.workspace-stage')?.getBoundingClientRect()
-      if (rect) setDesktopOrigin({ top: Math.max(0, rect.top), right: Math.max(0, window.innerWidth - rect.right), bottom: Math.max(0, window.innerHeight - rect.bottom), left: Math.max(0, rect.left) })
+      void import('../components/desktop/DesktopEnvironment')
+      if (!sceneReady) {
+        const rect = document.querySelector('.static-screen')?.getBoundingClientRect() ?? document.querySelector('.workspace-stage')?.getBoundingClientRect()
+        if (rect) setDesktopOrigin({ top: Math.max(0, rect.top), right: Math.max(0, window.innerWidth - rect.right), bottom: Math.max(0, window.innerHeight - rect.bottom), left: Math.max(0, rect.left) })
+      }
     }
     select(object)
-    if ((object === 'monitor' || object === 'keyboard') && !sceneReady) openApp(object === 'monitor' ? 'projects' : 'terminal')
+    if (!sceneReady) { if (object === 'monitor') setMode('desktop'); else if (object === 'keyboard') openApp('terminal') }
   }
-  const handleFocusArrived = useCallback((object: WorkspaceObject) => { if (object === 'monitor' || object === 'keyboard') openApp(object === 'monitor' ? 'projects' : 'terminal') }, [openApp])
+  const handleFocusArrived = useCallback((object: WorkspaceObject, frame?: { top: number; right: number; bottom: number; left: number }) => {
+    if (object === 'monitor') { if (frame) setDesktopOrigin(frame); setMode('desktop') }
+    else if (object === 'keyboard') openApp('terminal')
+  }, [openApp, setMode])
   const handleClear = () => clear()
 
   useEffect(() => {

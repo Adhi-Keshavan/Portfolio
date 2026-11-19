@@ -64,7 +64,7 @@ export const useWorkspaceStore = create<WorkspaceStore>((set, get) => ({
   windows: [],
   topZ: 1,
   projectSlug: null,
-  setMode: mode => set({ mode, cameraPhase: mode === 'desktop' ? 'desktop' : 'returning', ...(mode === 'workspace' ? { selected: null } : {}) }),
+  setMode: mode => set({ mode, cameraPhase: mode === 'desktop' ? 'desktop' : 'returning', ...(mode === 'workspace' ? { selected: null, windows: [] } : {}) }),
   setCameraPhase: cameraPhase => set({ cameraPhase }),
   selectObject: selected => set({ selected, cameraPhase: selected === 'monitor' ? 'monitor-transition' : 'object-focus' }),
   clearObject: () => set({ selected: null, cameraPhase: 'returning' }),

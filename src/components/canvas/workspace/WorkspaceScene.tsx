@@ -13,7 +13,7 @@ import { Decor } from './Decor'
 import { Lamp } from './Lamp'
 import type { Theme } from '../../../store/workspaceStore'
 
-export function WorkspaceScene({ selected, scrollFocus, onSelect, onFocusArrived, pointer, reducedMotion, onQualityChange, theme, lampOn, onToggleLamp }: { selected: WorkspaceObject | null; scrollFocus: WorkspaceObject | null; onSelect: (object: WorkspaceObject) => void; onFocusArrived: (object: WorkspaceObject) => void; pointer: React.RefObject<{ x: number; y: number }>; reducedMotion: boolean; onQualityChange: (quality: 'low' | 'high') => void; theme: Theme; lampOn: boolean; onToggleLamp: () => void }) {
+export function WorkspaceScene({ selected, scrollFocus, onSelect, onFocusArrived, pointer, reducedMotion, onQualityChange, theme, lampOn, onToggleLamp }: { selected: WorkspaceObject | null; scrollFocus: WorkspaceObject | null; onSelect: (object: WorkspaceObject) => void; onFocusArrived: (object: WorkspaceObject, frame?: { top: number; right: number; bottom: number; left: number }) => void; pointer: React.RefObject<{ x: number; y: number }>; reducedMotion: boolean; onQualityChange: (quality: 'low' | 'high') => void; theme: Theme; lampOn: boolean; onToggleLamp: () => void }) {
   const [hovered, setHovered] = useState<WorkspaceObject | null>(null)
   const [lampHovered, setLampHovered] = useState(false)
   const ambientAccent = useRef<THREE.PointLight>(null)
