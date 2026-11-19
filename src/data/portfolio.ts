@@ -16,6 +16,7 @@ export type Project = {
   demo?: string
   screenshot?: string
   screenshotAlt?: string
+  screenshots?: { src: string; alt: string }[]
   accent: string
   preview: 'aitizen' | 'payready' | 'cricket'
 }
@@ -35,8 +36,8 @@ export const person = {
 }
 
 export const workspaceObjects = [
-  { id: 'monitor', number: '01', title: 'Projects', hint: 'Explore the work', description: 'Real projects, decisions, and source code.' },
-  { id: 'keyboard', number: '02', title: 'Skills', hint: 'Inspect the toolkit', description: 'Languages, frameworks, and engineering tools.' },
+  { id: 'monitor', number: '01', title: 'Desktop', hint: 'Enter the studio OS', description: 'Project explorer, terminal, and portfolio apps.' },
+  { id: 'keyboard', number: '02', title: 'Terminal', hint: 'Use real commands', description: 'A focused command interface for this portfolio.' },
   { id: 'notebook', number: '03', title: 'About', hint: 'Read the story', description: 'Background, education, and how I think.' },
   { id: 'phone', number: '04', title: 'Contact', hint: 'Start a conversation', description: 'Email, professional profiles, and résumé.' },
 ] as const
@@ -67,7 +68,7 @@ export const projects: Project[] = [
     challenges: 'Making high-fidelity 3D assets legible within a browser narrative while keeping the project explanation readable.',
     result: 'A published source repository for the project cover page. The repository describes the broader autonomous-agent system as a concept; this case study covers the implemented web experience.',
     repository: 'https://github.com/Adhi-Keshavan/Aitizen-Realm-Cover-Page',
-    accent: '#7dc5f8',
+    accent: '#d97736',
     preview: 'aitizen',
   },
   {
@@ -85,7 +86,7 @@ export const projects: Project[] = [
     challenges: 'Keeping guidance grounded in official sources, rejecting sensitive values, and making the Sandbox payment demo visibly separate from KYC.',
     result: 'A working local prototype. It does not access PayPal accounts, submit documents, or make verification decisions.',
     repository: 'https://github.com/Adhi-Keshavan/Paypal/tree/main/paypal-kyc-assistant',
-    accent: '#67ddc4',
+    accent: '#ca8a58',
     preview: 'payready',
   },
   {
@@ -103,7 +104,7 @@ export const projects: Project[] = [
     challenges: 'The supplied extras data cannot recover exact runs for many deliveries. The model explicitly omits unsupported run-rate pressure and marks uncertain calculations.',
     result: 'Phases 1–4 and their validation reports are present. Final player rankings have not been produced, so no ranking claims are made here.',
     repository: 'https://github.com/Adhi-Keshavan/RR_Hackathon',
-    accent: '#c7a7f5',
+    accent: '#b79570',
     preview: 'cricket',
   },
 ]

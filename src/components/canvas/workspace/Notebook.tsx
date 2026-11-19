@@ -14,7 +14,7 @@ function PageLines({ left = false }: { left?: boolean }) {
 export function Notebook({ active, hovered, onSelect, onHover }: Props) {
   const cover = useRef<THREE.Group>(null)
   useFrame((_, delta) => {
-    if (cover.current) cover.current.rotation.z = THREE.MathUtils.damp(cover.current.rotation.z, active ? -.42 : hovered ? -.17 : -.02, 5, delta)
+    if (cover.current) cover.current.rotation.z = THREE.MathUtils.damp(cover.current.rotation.z, active ? -1.05 : hovered ? -.17 : -.02, 5, delta)
   })
   return <group position={[-2.72, .18, .67]} rotation={[0, .2, 0]} onPointerOver={event => { event.stopPropagation(); onHover(true) }} onPointerOut={event => { event.stopPropagation(); onHover(false) }} onClick={event => { event.stopPropagation(); onSelect() }}>
     <RoundedBox args={[2.28, .075, 1.55]} radius={.035} smoothness={3} castShadow><meshStandardMaterial color="#242a31" roughness={.75} /></RoundedBox>

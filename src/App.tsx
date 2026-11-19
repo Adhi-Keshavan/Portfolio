@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import ProjectDetail from './pages/ProjectDetail'
 import { projects } from './data/portfolio'
 import './App.css'
+import './styles/living.css'
 
 function App() {
   const [, setLocationKey] = useState(window.location.pathname + window.location.search)

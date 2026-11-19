@@ -12,20 +12,20 @@ const focus = {
   phone: { position: [4.28, 2.74, 2.88], target: [2.86, .2, .66] },
 } satisfies Record<WorkspaceObject, { position: number[]; target: number[] }>
 
-export function CameraController({ selected, pointer, reducedMotion }: { selected: WorkspaceObject | null; pointer: React.RefObject<{ x: number; y: number }>; reducedMotion: boolean }) {
+export function CameraController({ selected, scrollFocus, pointer, reducedMotion }: { selected: WorkspaceObject | null; scrollFocus: WorkspaceObject | null; pointer: React.RefObject<{ x: number; y: number }>; reducedMotion: boolean }) {
   const controls = useRef<OrbitControlsImpl>(null)
   const transitioning = useRef(true)
   const { size } = useThree()
 
-  useEffect(() => { transitioning.current = true }, [selected])
+  useEffect(() => { transitioning.current = true }, [selected, scrollFocus])
 
   useFrame(({ camera }, delta) => {
     const control = controls.current
     if (!control) return
     const compact = size.width < 690
     const overviewPosition = compact ? [9.2, 6.9, 11.5] : [7.6, 5.65, 9.45]
-    const destination = selected ? focus[selected] : { position: overviewPosition, target: [0, .62, 0] }
-    if (selected || transitioning.current) {
+    const destination = selected ? focus[selected] : scrollFocus ? focus[scrollFocus] : { position: overviewPosition, target: [0, .62, 0] }
+    if (selected || scrollFocus || transitioning.current) {
       control.enabled = false
       const factor = reducedMotion ? 1 : 3.2
       camera.position.x = THREE.MathUtils.damp(camera.position.x, destination.position[0], factor, delta)
@@ -35,7 +35,7 @@ export function CameraController({ selected, pointer, reducedMotion }: { selecte
       control.target.y = THREE.MathUtils.damp(control.target.y, destination.target[1], factor, delta)
       control.target.z = THREE.MathUtils.damp(control.target.z, destination.target[2], factor, delta)
       control.update()
-      if (!selected && camera.position.distanceTo(new THREE.Vector3(...overviewPosition)) < .035) transitioning.current = false
+      if (!selected && !scrollFocus && camera.position.distanceTo(new THREE.Vector3(...overviewPosition)) < .035) transitioning.current = false
     } else {
       control.enabled = true
       const target = pointer.current

@@ -28,7 +28,7 @@ export function Keyboard({ active, hovered, onSelect, onHover }: Props) {
   })
   return <group position={[-.58, .18, 1.16]} rotation={[0, -.035, 0]} onPointerOver={event => { event.stopPropagation(); onHover(true) }} onPointerOut={event => { event.stopPropagation(); onHover(false) }} onClick={event => { event.stopPropagation(); onSelect() }}>
     <RoundedBox args={[3.13, .16, 1.02]} radius={.055} smoothness={3} castShadow receiveShadow><meshStandardMaterial color="#242a31" metalness={.65} roughness={.38} /></RoundedBox>
-    <instancedMesh ref={keys} args={[keyGeometry, undefined, 70]} castShadow><meshStandardMaterial ref={material} color="#a6afb7" metalness={.21} roughness={.63} emissive="#3c8ab2" emissiveIntensity={0} /></instancedMesh>
-    <mesh position={[0, .083, .5]}><boxGeometry args={[2.85, .008, .012]} /><meshBasicMaterial color={hovered || active ? '#62c8e7' : '#31536b'} /></mesh>
+    <instancedMesh ref={keys} args={[keyGeometry, undefined, 70]} castShadow><meshStandardMaterial ref={material} color="#bdb6ac" metalness={.21} roughness={.63} emissive="#d97736" emissiveIntensity={0} /></instancedMesh>
+    <mesh position={[0, .083, .5]}><boxGeometry args={[2.85, .008, .012]} /><meshBasicMaterial color={hovered || active ? '#d97736' : '#71543f'} /></mesh>
   </group>
 }

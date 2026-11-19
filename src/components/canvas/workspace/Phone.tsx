@@ -14,7 +14,7 @@ export function Phone({ active, hovered, onSelect, onHover }: Props) {
   })
   return <group position={[2.86, .2, .66]} rotation={[0, -.25, 0]} onPointerOver={event => { event.stopPropagation(); onHover(true) }} onPointerOut={event => { event.stopPropagation(); onHover(false) }} onClick={event => { event.stopPropagation(); onSelect() }}>
     <RoundedBox args={[.83, .12, 1.53]} radius={.09} smoothness={4} castShadow receiveShadow><meshStandardMaterial color="#1b222c" metalness={.76} roughness={.3} /></RoundedBox>
-    <mesh position={[0, .068, 0]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[.73, 1.39]} /><meshStandardMaterial ref={screen} map={texture} emissive="#62b6e6" emissiveMap={texture} emissiveIntensity={.18} roughness={.3} toneMapped={false} /></mesh>
+    <mesh position={[0, .068, 0]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[.73, 1.39]} /><meshStandardMaterial ref={screen} map={texture} emissive="#e8aa79" emissiveMap={texture} emissiveIntensity={.18} roughness={.3} toneMapped={false} /></mesh>
     <mesh position={[0, .073, -.68]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[.17, .015]} /><meshBasicMaterial color="#1a2835" /></mesh>
   </group>
 }

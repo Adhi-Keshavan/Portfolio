@@ -20,9 +20,9 @@ export function Monitor({ active, hovered, onSelect, onHover }: Props) {
     <group position={[0, 1.94, 0]} rotation={[-.045, 0, 0]}>
       <RoundedBox args={[4.42, 2.48, .14]} radius={.085} smoothness={4} castShadow receiveShadow><meshStandardMaterial color="#171d26" metalness={.75} roughness={.28} /></RoundedBox>
       <mesh position={[0, .025, .081]}><planeGeometry args={[4.18, 2.26]} /><meshStandardMaterial ref={screen} map={texture} emissive="#ffffff" emissiveMap={texture} emissiveIntensity={.55} roughness={.42} metalness={.05} toneMapped={false} /></mesh>
-      <mesh position={[0, -1.19, .085]}><boxGeometry args={[4.18, .013, .012]} /><meshBasicMaterial color={active || hovered ? '#67cbe9' : '#4b7c97'} /></mesh>
+      <mesh position={[0, -1.19, .085]}><boxGeometry args={[4.18, .013, .012]} /><meshBasicMaterial color={active || hovered ? '#d97736' : '#71543f'} /></mesh>
       <mesh position={[0, -1.22, .09]}><sphereGeometry args={[.017, 8, 8]} /><meshBasicMaterial color="#c1d7e3" /></mesh>
     </group>
-    <pointLight ref={light} position={[0, 1.6, 1.3]} color="#5bace8" intensity={.35} distance={4.8} decay={2} />
+    <pointLight ref={light} position={[0, 1.6, 1.3]} color="#e4a06b" intensity={.35} distance={4.8} decay={2} />
   </group>
 }

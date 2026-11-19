@@ -1,10 +1,9 @@
-import { useCallback, useState } from 'react'
-
-export type WorkspaceObject = 'monitor' | 'keyboard' | 'notebook' | 'phone'
+import { useWorkspaceStore, type WorkspaceObject } from '../store/workspaceStore'
+export type { WorkspaceObject } from '../store/workspaceStore'
 
 export function useWorkspaceSelection() {
-  const [selected, setSelected] = useState<WorkspaceObject | null>(null)
-  const select = useCallback((object: WorkspaceObject) => setSelected(object), [])
-  const clear = useCallback(() => setSelected(null), [])
+  const selected = useWorkspaceStore(state => state.selected)
+  const select = useWorkspaceStore(state => state.selectObject) as (object: WorkspaceObject) => void
+  const clear = useWorkspaceStore(state => state.clearObject)
   return { selected, select, clear }
 }

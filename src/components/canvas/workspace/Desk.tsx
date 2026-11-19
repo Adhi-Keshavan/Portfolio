@@ -1,13 +1,14 @@
 import { RoundedBox } from '@react-three/drei'
 import { useMemo } from 'react'
 import { createWoodTexture } from './textures'
+import type { Theme } from '../../../store/workspaceStore'
 
-export function Desk() {
+export function Desk({ theme }: { theme: Theme }) {
   const wood = useMemo(() => createWoodTexture(), [])
   return <group>
     <mesh receiveShadow position={[0, -1.43, 0]} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[40, 40]} />
-      <meshStandardMaterial color="#14171c" roughness={1} />
+      <meshStandardMaterial color={theme === 'day' ? '#c9c3bb' : '#171513'} roughness={1} />
     </mesh>
     {[[-3.66, -1.74], [3.66, -1.74], [-3.66, 1.74], [3.66, 1.74]].map(([x, z], i) => <mesh key={i} position={[x, -0.72, z]} castShadow receiveShadow>
       <boxGeometry args={[0.17, 1.43, 0.17]} />
