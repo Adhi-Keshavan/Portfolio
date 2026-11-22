@@ -8,7 +8,7 @@ import { WorkspacePanel } from '../components/workspace/WorkspacePanel'
 import { useWorkspaceSelection, type WorkspaceObject } from '../hooks/useWorkspaceSelection'
 import { person, workspaceObjects } from '../data/portfolio'
 import { useWorkspaceStore } from '../store/workspaceStore'
-import './HomeLoading.css'
+import { HomeLoading } from './HomeLoading'
 
 const WorkspaceExperience = lazy(() => import('../components/canvas/WorkspaceExperience'))
 const DesktopEnvironment = lazy(() => import('../components/desktop/DesktopEnvironment').then(module => ({ default: module.DesktopEnvironment })))
@@ -52,10 +52,12 @@ export default function Home() {
   const setMode = useWorkspaceStore(state => state.setMode)
   const [sceneReady, setSceneReady] = useState(false)
   const [sceneFailed, setSceneFailed] = useState(false)
+  const [loadingComplete, setLoadingComplete] = useState(false)
   const allowScene = useMemo(() => canUseWebGL(reducedMotion), [reducedMotion]) && !sceneFailed
   const interactiveReady = allowScene && sceneReady
-  const showLoader = allowScene && !sceneReady
+  const showLoader = allowScene && !loadingComplete
   const handleSceneReady = useCallback(() => setSceneReady(true), [])
+  const handleLoadingComplete = useCallback(() => setLoadingComplete(true), [])
   const [desktopOrigin, setDesktopOrigin] = useState({ top: 80, right: 0, bottom: 100, left: 0 })
   const handleSelect = (object: WorkspaceObject) => {
     if (object === 'monitor') {
@@ -81,10 +83,10 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    if (!showLoader) return
+    if (!allowScene || sceneReady) return
     const timeout = window.setTimeout(() => { setSceneFailed(true); setSceneReady(false) }, 15000)
     return () => window.clearTimeout(timeout)
-  }, [showLoader])
+  }, [allowScene, sceneReady])
 
   useEffect(() => {
     if (allowScene) return
@@ -114,10 +116,6 @@ export default function Home() {
       </section>
     </main>
     <Suspense fallback={null}><AnimatePresence>{mode === 'desktop' && <DesktopEnvironment origin={desktopOrigin} />}</AnimatePresence></Suspense>
-    <AnimatePresence initial={false}>{showLoader && <motion.div className="home-loading" role="status" aria-live="polite" aria-label="Preparing the interactive workspace" exit={{ opacity: 0 }} transition={{ duration: .55, ease: 'easeOut' }} key="workspace-loading">
-      <div className="home-loading__brand"><span className="home-loading__monogram">AK<span>.</span></span><span>DESK<span>.OS</span></span></div>
-      <div className="home-loading__content"><span className="home-loading__eyebrow">ADHI KESHAVAN B &nbsp;/&nbsp; PORTFOLIO</span><h2>Preparing the<br /><em>workspace<span>.</span></em></h2><p>Bringing the studio into focus.</p><div className="home-loading__track" aria-hidden="true"><span /></div><Link to="/quick-view">Open quick view <ArrowUpRight size={15} /></Link></div>
-      <span className="home-loading__footer">DESK.OS &nbsp; / &nbsp; INTERACTIVE WORKSPACE</span>
-    </motion.div>}</AnimatePresence>
+    <AnimatePresence initial={false}>{showLoader && <HomeLoading key="workspace-loading" ready={sceneReady} onComplete={handleLoadingComplete} />}</AnimatePresence>
   </div>
 }
