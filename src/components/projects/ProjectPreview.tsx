@@ -1,14 +1,15 @@
 import type { Project } from '../../data/portfolio'
+import './ProjectPreview.css'
 
 export function ProjectPreview({ project, large = false }: { project: Project; large?: boolean }) {
-  if (project.screenshot) return <img className="project-screenshot" src={project.screenshot} alt={project.screenshotAlt || `${project.title} project screenshot`} loading="lazy" />
+  const screenshot = project.screenshot ?? project.screenshots?.[0]?.src
+  if (screenshot) return <img className="project-screenshot" src={screenshot} alt={project.screenshotAlt || project.screenshots?.[0]?.alt || `${project.title} project screenshot`} loading="lazy" />
 
-  return <div className={`project-preview project-preview--${project.preview}${large ? ' project-preview--large' : ''}`} aria-label={`${project.title} visual overview`} role="img">
+  return <div className={`project-preview project-preview--${project.preview}${large ? ' project-preview--large' : ''}`} aria-label={`Illustrative preview of ${project.title}; source screenshot pending`} role="img">
     <div className="preview-chrome"><span /><span /><span /><b>{project.preview === 'cricket' ? 'ANALYSIS / REPORT' : project.preview === 'payready' ? 'PAYREADY / WORKSPACE' : 'AITIZEN / REALM'}</b></div>
     {project.preview === 'aitizen' && <div className="preview-aitizen">
-      <div className="preview-orb"><i /><i /><i /><em /></div>
-      <div className="preview-aitizen-copy"><small>THE FUTURE OF EVERYDAY INTELLIGENCE</small><strong>AITIZEN<br />REALM</strong><span>Explore the architecture of autonomous action.</span></div>
-      <div className="preview-coordinate">42° 08′ N / ENGINE 01</div>
+      <div className="preview-architecture"><i /><i /><i /></div>
+      <div className="preview-aitizen-copy"><small>FINAL-YEAR PROJECT / 3D COVER PAGE</small><strong>AITIZEN<br />REALM</strong><span>An interactive introduction to an autonomous-agent concept.</span></div>
     </div>}
     {project.preview === 'payready' && <div className="preview-payready">
       <div className="preview-payready-top"><span>PayReady <b>India</b></span><span>MERCHANT READINESS</span></div>

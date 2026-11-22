@@ -1,0 +1,120 @@
+.home-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding: clamp(24px, 4vw, 72px);
+  color: #f5f3ee;
+  background: radial-gradient(circle at 72% 42%, #30251f 0, #1c1b1a 37%, #151515 72%);
+}
+
+.home-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .25;
+  background: linear-gradient(90deg, transparent 49.95%, #7b625022 50%, transparent 50.05%);
+}
+
+.home-loading__brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: fit-content;
+  font: 700 18px Manrope, sans-serif;
+  letter-spacing: -.04em;
+}
+
+.home-loading__brand > span:last-child > span,
+.home-loading__monogram span,
+.home-loading__content h2 em span {
+  color: #d97736;
+}
+
+.home-loading__monogram {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid #d9773677;
+  font-size: 17px;
+}
+
+.home-loading__content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 750px);
+  margin: auto 0;
+  padding: 60px 0;
+}
+
+.home-loading__eyebrow,
+.home-loading__footer {
+  color: #d89a6e;
+  font: 500 10px 'IBM Plex Mono', monospace;
+  letter-spacing: .17em;
+}
+
+.home-loading__content h2 {
+  margin: 30px 0 20px;
+  font: 600 clamp(56px, 7.5vw, 112px)/.97 Manrope, sans-serif;
+  letter-spacing: -.075em;
+}
+
+.home-loading__content h2 em {
+  font-style: normal;
+  color: #d3cac3;
+}
+
+.home-loading__content p {
+  margin: 0;
+  color: #aaa19a;
+  font-size: 15px;
+}
+
+.home-loading__track {
+  width: min(100%, 410px);
+  height: 2px;
+  margin: 48px 0 26px;
+  overflow: hidden;
+  background: #7d6a5b55;
+}
+
+.home-loading__track span {
+  display: block;
+  width: 38%;
+  height: 100%;
+  background: #d97736;
+  animation: home-loading-progress 1.7s ease-in-out infinite alternate;
+}
+
+.home-loading__content a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  color: #f5c4a0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.home-loading__content a:hover { color: #fff; }
+
+.home-loading__footer { color: #8e7e73; }
+
+@keyframes home-loading-progress {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(280%); }
+}
+
+@media (max-width: 600px) {
+  .home-loading__content h2 { font-size: clamp(48px, 12vw, 70px); }
+  .home-loading__content p { font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-loading__track span { animation: none; }
+}

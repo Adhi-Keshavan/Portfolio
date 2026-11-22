@@ -11,11 +11,13 @@ export type Project = {
   contribution: string
   process: string
   challenges: string
+  learning: string
   result: string
   repository: string
   demo?: string
   screenshot?: string
   screenshotAlt?: string
+  screenshots?: { src: string; alt: string }[]
   accent: string
   preview: 'aitizen' | 'payready' | 'cricket'
 }
@@ -31,8 +33,15 @@ export const person = {
   email: 'adhikeshavan050505@gmail.com',
   github: 'https://github.com/Adhi-Keshavan',
   linkedin: 'https://www.linkedin.com/in/adhi-keshavan',
-  resume: null as string | null,
+  resume: '/resume.pdf' as string | null,
 }
+
+export const workspaceObjects = [
+  { id: 'monitor', number: '01', title: 'Desktop', hint: 'Enter the studio OS', description: 'Project explorer, terminal, and portfolio apps.' },
+  { id: 'keyboard', number: '02', title: 'Terminal', hint: 'Use real commands', description: 'A focused command interface for this portfolio.' },
+  { id: 'notebook', number: '03', title: 'About', hint: 'Read the story', description: 'Background, education, and how I think.' },
+  { id: 'phone', number: '04', title: 'Contact', hint: 'Start a conversation', description: 'Email, professional profiles, and résumé.' },
+] as const
 
 export const skillGroups = [
   { name: 'Programming', items: ['Python', 'Java', 'JavaScript', 'TypeScript'] },
@@ -58,17 +67,18 @@ export const projects: Project[] = [
     contribution: 'The project credits Adhi with 3D modeling, Blender assets, and shaders within a four-person team.',
     process: 'The cover page is structured as eight connected chapters, from the hero through project specifications and team credits.',
     challenges: 'Making high-fidelity 3D assets legible within a browser narrative while keeping the project explanation readable.',
+    learning: 'The visual journey works best when each 3D scene has a clear narrative purpose and the accompanying explanation stays readable.',
     result: 'A published source repository for the project cover page. The repository describes the broader autonomous-agent system as a concept; this case study covers the implemented web experience.',
     repository: 'https://github.com/Adhi-Keshavan/Aitizen-Realm-Cover-Page',
-    accent: '#7dc5f8',
+    accent: '#d97736',
     preview: 'aitizen',
   },
   {
     slug: 'payready-india',
     number: '02',
     title: 'PayReady India',
-    eyebrow: 'Hackathon prototype · full stack',
-    summary: 'A merchant onboarding preparation guide with checklists, source-linked answers, and a privacy-aware document lab.',
+    eyebrow: 'AI-assisted KYC readiness · full stack',
+    summary: 'A merchant onboarding and KYC preparation guide with checklists, source-linked answers, optional AI guidance, and a privacy-aware document lab.',
     problem: 'Merchants need a clear way to prepare for PayPal India onboarding without confusing preparation guidance with an official KYC decision.',
     approach: 'Separate readiness guidance from account verification. The prototype uses checklists, verified sources, optional grounded answers, and synthetic or redacted sample inputs.',
     architecture: ['React and Vite frontend', 'FastAPI endpoints for checklists, scores, and assistant answers', 'Verified knowledge base with official source links', 'Optional Gemini and PayPal Sandbox integrations stay server-side'],
@@ -76,9 +86,10 @@ export const projects: Project[] = [
     contribution: 'The connected repository contains the frontend, backend, knowledge base, API tests, and demo documentation. Individual team attribution is not documented.',
     process: 'The foundation was checked with backend unit tests, frontend lint and build, and browser flows for checklist progress and connection recovery.',
     challenges: 'Keeping guidance grounded in official sources, rejecting sensitive values, and making the Sandbox payment demo visibly separate from KYC.',
+    learning: 'A readiness guide needs to keep source-backed preparation separate from any claim of official verification.',
     result: 'A working local prototype. It does not access PayPal accounts, submit documents, or make verification decisions.',
     repository: 'https://github.com/Adhi-Keshavan/Paypal/tree/main/paypal-kyc-assistant',
-    accent: '#67ddc4',
+    accent: '#ca8a58',
     preview: 'payready',
   },
   {
@@ -94,9 +105,10 @@ export const projects: Project[] = [
     contribution: 'The repository documents the analysis pipeline, data-quality audit, pressure model, descriptive comparisons, and validation reports.',
     process: 'The work is organized in phases with written evidence for data validation, pressure coverage, batting, and bowling analysis.',
     challenges: 'The supplied extras data cannot recover exact runs for many deliveries. The model explicitly omits unsupported run-rate pressure and marks uncertain calculations.',
+    learning: 'Documenting missing inputs and uncertain calculations makes the analysis more reliable than filling gaps with unsupported estimates.',
     result: 'Phases 1–4 and their validation reports are present. Final player rankings have not been produced, so no ranking claims are made here.',
     repository: 'https://github.com/Adhi-Keshavan/RR_Hackathon',
-    accent: '#c7a7f5',
+    accent: '#b79570',
     preview: 'cricket',
   },
 ]

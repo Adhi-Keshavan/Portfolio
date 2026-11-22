@@ -1,0 +1,16 @@
+# Desktop imagery
+
+- `public/desktop/wallpaper-4k.jpg` — 3840 × 2160 photo by [Yusuf P on Pexels](https://www.pexels.com/photo/black-desk-with-computer-near-window-with-blinds-11163177/). Used as the DESK.OS wallpaper with color overlays applied in CSS.
+- `public/desktop/plant-study.png` — 1672 × 941 original image generated with the built-in imagegen tool. Source for the framed artwork; not a project screenshot.
+- `public/desktop/keyboard-study.png` — 1672 × 941 original image generated with the built-in imagegen tool. Source for the framed artwork; not a project screenshot.
+- `public/desktop/framed-studies.png` — 1928 × 816 transparent composite generated with the built-in imagegen tool from the two study images. Saved as a standalone asset; not displayed on the desktop.
+
+## Imagegen prompts
+
+**Plant study:** “Use case: photorealistic-natural. Asset type: original editorial photograph displayed as a small image on the DESK.OS desktop. A close-up study of healthy deep olive-green ficus leaves in a matte dark charcoal ceramic pot on a walnut desk, with visible natural leaf veins, tiny imperfections, varied leaf sizes, realistic soil and thin woody stems. Warm directional studio window light and soft shadows, charcoal plaster background. Premium architectural photography, sharp material detail, landscape 16:9 composition intended for a 4K display. No text, no logos, no UI, no people, no cartoon look, no watermark.”
+
+**Keyboard study:** “Use case: product-mockup. Asset type: original editorial detail photograph displayed as a second image on the DESK.OS desktop. Macro architectural product photograph of a premium compact mechanical keyboard on a dark walnut desk: convincing staggered key layout with a long spacebar, warm ivory keycaps, a few charcoal modifiers, one restrained burnt-orange escape key, brushed graphite aluminum case. Three-quarter angle, crisp keycap texture, subtle natural wear, shallow but controlled depth of field, warm studio light and real shadows. Landscape 16:9 intended for a 4K display. No readable key legends, no brand names, no logos, no UI, no people, no cartoon look, no watermark.”
+
+**Framed composite:** “Use case: compositing. Asset type: a single transparent PNG artwork for a desktop portfolio wallpaper. Input image 1 is the keyboard photograph; input image 2 is the plant photograph. Preserve the recognizable photographic subjects, colors, and crop quality from both inputs. Present them as two separate physical framed prints side by side, keyboard print on the left in a slightly wider landscape frame, plant print on the right in a narrower portrait frame. Thin matte charcoal metal frames with a subtle warm walnut inner edge and realistic bevel/shadow; generous gap between frames; both frames front-facing, aligned at the top, clean straight edges. Isolate the two framed prints on a genuinely transparent background so the artwork can be placed over an existing desktop wallpaper. No surrounding room, no desktop UI, no captions, no text, no red circles, no watermark. High-resolution crisp output.”
+
+The two generated detail images are not native 4K. Their source resolution exceeds their rendered desktop tile size; the wallpaper is native 4K.

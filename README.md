@@ -1,38 +1,46 @@
-# Adhi Keshavan B — Engineering Portfolio
+# DESK.OS
 
-A React and Three.js portfolio organized around the **Engineering Nexus**. The page keeps every section readable in HTML while the 3D sculpture adds a connected scroll narrative on capable desktop devices.
+An interactive developer portfolio for Adhi Keshavan B. The homepage is a 3D workstation; selecting the monitor moves the camera toward its screen and opens a functional portfolio desktop. **Quick View** at `/quick-view` provides direct, scrollable access to the same work without using the 3D scene.
 
-## Run locally
+## Run and verify
 
 ```bash
 npm ci
 npm run dev
-```
-
-## Validate
-
-```bash
 npm run lint
 npm run build
 ```
 
-The production build is written to `dist/`.
+Vite writes the production site to `dist/`. Open `/` for the workstation, `/quick-view` for the recruiter page, and `/projects/<slug>` for a case study.
 
-## Personal details and assets
+## Experience
 
-Edit `src/data/portfolio.ts` to update the name, links, skills, project facts, and case studies. Project claims were checked against the connected GitHub repositories. The three NoviTech R&D internships are supported by certificates in the parent workspace.
+- The desk, monitor, keyboard, notebook, phone, lamp, mug, plant, and wall art use React Three Fiber and procedural materials. The monitor shows a DESK.OS wallpaper; the desktop itself is crisp HTML.
+- GSAP moves the camera to a selected object and cancels an earlier movement when a new object is chosen. Motion for React reveals the desktop from the workstation stage and reverses that reveal on return.
+- The desktop has Project Explorer, Terminal, About, Skills, Résumé Viewer, Contact, and Settings. Apps load on demand. Windows can open, close, minimize, restore, stack, drag, resize, and maximize. Mobile uses full-width panels and a touch-friendly launcher.
+- The terminal supports `help`, `about`, `skills`, `projects`, `projects list`, `projects open [project-id]`, `education`, `contact`, `resume`, `clear`, `theme light`, `theme dark`, `workspace`, and `exit`. It only parses local commands and never executes shell code. `Tab` completes an unambiguous command.
+- Settings control light/dark mode, the desk lamp, and reduced motion. Theme and motion preferences are saved in the browser. `Escape` closes the app menu, then the top window, then returns to the workstation.
+- A static workspace replaces the canvas on small screens, low-powered devices, WebGL failure, and reduced-motion mode. The Quick View and case-study routes remain available without WebGL.
 
-No résumé PDF was provided. Set `person.resume` to `/resume.pdf` after placing the final résumé at `public/resume.pdf`. Until then, the résumé links open an email request. `person.email` and `person.linkedin` are sourced from the author's GitHub profile README and can be updated in the same data file.
+## Architecture
 
-Project preview artwork is a visual interpretation of documented source, explicitly labeled as such. Add an actual screenshot under `public/projects/` and set `screenshot` and `screenshotAlt` for its project record when available. No live demo URLs are shown without a verified deployment.
+- `src/data/portfolio.ts`: typed profile, skills, project descriptions, links, and technical takeaways.
+- `src/store/workspaceStore.ts`: Zustand selection, camera phase, desktop mode, settings, and window state.
+- `src/components/canvas/workspace/`: 3D scene objects, lighting, textures, and GSAP camera controller.
+- `src/components/desktop/`: desktop, window manager, launcher, terminal, projects, and content apps.
+- `src/pages/Home.tsx`: studio introduction and monitor handoff.
+- `src/pages/QuickView.tsx`: accessible recruiter route.
+- `src/pages/ProjectDetail.tsx`: dedicated case-study route.
+- `src/App.tsx`: React Router configuration.
 
-## Performance and accessibility
+## Content and assets
 
-- The WebGL scene is lazy loaded after idle time and omitted on narrow screens, reduced-motion systems, and devices reporting four or fewer CPU cores.
-- The scene uses a capped device pixel ratio and a small set of reusable geometries and materials. Rendering pauses when the tab is hidden.
-- Native scrolling, keyboard-accessible project navigation, visible focus states, semantic sections, and a static CSS sculpture are available without WebGL.
-- GSAP ScrollTrigger only controls the 3D journey state; Motion for React handles small UI transitions.
+Project descriptions are grounded in the linked repositories. PayReady India is a KYC preparation prototype; it does not make verification decisions. Genuine project screenshots are pending. Current previews are labeled as illustrations. Add images under `public/projects/`, then set `screenshot` and `screenshotAlt` (or `screenshots`) in `src/data/portfolio.ts`. The explorer enables its screenshot viewer when images are present.
 
-## Deploy
+The desktop wallpaper is a native 3840 × 2160 image. The previously generated framed artwork remains available as a standalone asset but is not shown on the desktop. Sources, dimensions, and generation prompts are documented in `ASSET_CREDITS.md`.
 
-Build with `npm run build` and publish `dist/`. `public/_redirects` supports Netlify SPA routes; `vercel.json` supports Vercel SPA routes. Each project case study has a direct URL at `/projects/<slug>`.
+`public/resume.pdf` is an interim one-page résumé generated from verified portfolio and certificate details. Its source is `scripts/generate_resume.py`. Replace it with the final résumé when available. Update the contact details in `src/data/portfolio.ts` if needed.
+
+## Deployment
+
+For Netlify, build with `npm run build` and publish `dist/`. `public/_redirects` sends direct route requests to the SPA entry point. For Vercel, use the same build and output directory; `vercel.json` provides the route fallback. No environment variables or backend service are required.
