@@ -18,8 +18,8 @@ export default function WorkspaceExperience({ selected, scrollFocus, onSelect, o
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update) }
   }, [])
   return <div ref={container} className="workspace-canvas" onPointerMove={event => { const rect = event.currentTarget.getBoundingClientRect(); pointer.current.x = (event.clientX - rect.left) / rect.width * 2 - 1; pointer.current.y = (event.clientY - rect.top) / rect.height * 2 - 1 }} onPointerLeave={() => { pointer.current.x = 0; pointer.current.y = 0 }}>
-    <Canvas shadows dpr={quality === 'high' ? [1, 2] : 1} frameloop={visible && !paused ? 'always' : 'never'} camera={{ position: [9.5, 8.1, 13], fov: 41, near: .1, far: 60 }} gl={{ antialias: quality === 'high', powerPreference: 'high-performance' }} onCreated={onReady}>
-      <Suspense fallback={null}><WorkspaceScene selected={selected} scrollFocus={scrollFocus} onSelect={onSelect} onFocusArrived={onFocusArrived} pointer={pointer} reducedMotion={reducedMotion} onQualityChange={setQuality} theme={theme} lampOn={lampOn} onToggleLamp={onToggleLamp} /></Suspense>
+    <Canvas shadows dpr={quality === 'high' ? [1, 2] : 1} frameloop={visible && !paused ? 'always' : 'never'} camera={{ position: [9.5, 8.1, 13], fov: 41, near: .1, far: 60 }} gl={{ antialias: quality === 'high', powerPreference: 'high-performance' }}>
+      <Suspense fallback={null}><WorkspaceScene selected={selected} scrollFocus={scrollFocus} onSelect={onSelect} onFocusArrived={onFocusArrived} onReady={onReady} pointer={pointer} reducedMotion={reducedMotion} onQualityChange={setQuality} theme={theme} lampOn={lampOn} onToggleLamp={onToggleLamp} /></Suspense>
     </Canvas>
   </div>
 }

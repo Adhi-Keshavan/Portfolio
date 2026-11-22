@@ -1,4 +1,4 @@
-import { Component, lazy, Suspense, useCallback, useEffect, useState, type ReactNode } from 'react'
+import { Component, lazy, Suspense, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { ArrowUpRight, LampDesk, Moon, RotateCcw, Sun } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
@@ -8,6 +8,7 @@ import { WorkspacePanel } from '../components/workspace/WorkspacePanel'
 import { useWorkspaceSelection, type WorkspaceObject } from '../hooks/useWorkspaceSelection'
 import { person, workspaceObjects } from '../data/portfolio'
 import { useWorkspaceStore } from '../store/workspaceStore'
+import './HomeLoading.css'
 
 const WorkspaceExperience = lazy(() => import('../components/canvas/WorkspaceExperience'))
 const DesktopEnvironment = lazy(() => import('../components/desktop/DesktopEnvironment').then(module => ({ default: module.DesktopEnvironment })))
@@ -25,23 +26,16 @@ function canUseWebGL(reducedMotion: boolean) {
   try { return !!document.createElement('canvas').getContext('webgl2') } catch { return false }
 }
 
-function WorkspaceStage({ selected, onSelect, onFocusArrived, onReadyChange }: { selected: WorkspaceObject | null; onSelect: (object: WorkspaceObject) => void; onFocusArrived: (object: WorkspaceObject, frame?: { top: number; right: number; bottom: number; left: number }) => void; onReadyChange: (ready: boolean) => void }) {
-  const [enabled, setEnabled] = useState(false)
-  const [ready, setReady] = useState(false)
+function WorkspaceStage({ selected, onSelect, onFocusArrived, allowScene, ready, onReady, onFailure }: { selected: WorkspaceObject | null; onSelect: (object: WorkspaceObject) => void; onFocusArrived: (object: WorkspaceObject, frame?: { top: number; right: number; bottom: number; left: number }) => void; allowScene: boolean; ready: boolean; onReady: () => void; onFailure: () => void }) {
   const theme = useWorkspaceStore(state => state.theme)
   const desktopOpen = useWorkspaceStore(state => state.mode === 'desktop')
   const lampOn = useWorkspaceStore(state => state.lampOn)
   const setTheme = useWorkspaceStore(state => state.setTheme)
   const toggleLamp = useWorkspaceStore(state => state.toggleLamp)
   const reducedMotion = useWorkspaceStore(state => state.reducedMotion)
-  useEffect(() => {
-    if (!canUseWebGL(reducedMotion)) { const id = window.setTimeout(() => { setEnabled(false); setReady(false); onReadyChange(false) }, 0); return () => clearTimeout(id) }
-    const id = window.setTimeout(() => setEnabled(true), 280)
-    return () => clearTimeout(id)
-  }, [reducedMotion, onReadyChange])
   return <div className={`workspace-stage${ready ? ' workspace-stage--ready' : ''}`}>
-    <StaticWorkspace onSelect={onSelect} lampOn={lampOn} />
-    {enabled && <SceneBoundary onFailure={() => { setEnabled(false); setReady(false); onReadyChange(false) }}><Suspense fallback={null}><WorkspaceExperience selected={selected} scrollFocus={null} onSelect={onSelect} onFocusArrived={onFocusArrived} onReady={() => { setReady(true); onReadyChange(true) }} reducedMotion={reducedMotion} theme={theme} lampOn={lampOn} onToggleLamp={toggleLamp} paused={desktopOpen} /></Suspense></SceneBoundary>}
+    {!allowScene && <StaticWorkspace onSelect={onSelect} lampOn={lampOn} />}
+    {allowScene && <SceneBoundary onFailure={onFailure}><Suspense fallback={null}><WorkspaceExperience selected={selected} scrollFocus={null} onSelect={onSelect} onFocusArrived={onFocusArrived} onReady={onReady} reducedMotion={reducedMotion} theme={theme} lampOn={lampOn} onToggleLamp={toggleLamp} paused={desktopOpen} /></Suspense></SceneBoundary>}
     <div className="stage-controls" aria-label="Workspace preferences"><button type="button" onClick={() => setTheme(theme === 'night' ? 'day' : 'night')} aria-label={`Switch to ${theme === 'night' ? 'day' : 'night'} mode`}>{theme === 'night' ? <Sun size={17} /> : <Moon size={17} />}<span>{theme === 'night' ? 'Day' : 'Night'}</span></button><button type="button" onClick={toggleLamp} aria-pressed={lampOn} aria-label={`${lampOn ? 'Turn off' : 'Turn on'} desk lamp`}><LampDesk size={17} /><span>Lamp {lampOn ? 'on' : 'off'}</span></button></div>
     <div className="stage-label stage-label--top"><span className="live-dot" /> INTERACTIVE WORKSPACE <span> / 01</span></div>
     <div className="stage-label stage-label--bottom">DRAG TO ORBIT <span>·</span> SELECT AN OBJECT TO FOCUS</div>
@@ -57,17 +51,22 @@ export default function Home() {
   const openApp = useWorkspaceStore(state => state.openApp)
   const setMode = useWorkspaceStore(state => state.setMode)
   const [sceneReady, setSceneReady] = useState(false)
+  const [sceneFailed, setSceneFailed] = useState(false)
+  const allowScene = useMemo(() => canUseWebGL(reducedMotion), [reducedMotion]) && !sceneFailed
+  const interactiveReady = allowScene && sceneReady
+  const showLoader = allowScene && !sceneReady
+  const handleSceneReady = useCallback(() => setSceneReady(true), [])
   const [desktopOrigin, setDesktopOrigin] = useState({ top: 80, right: 0, bottom: 100, left: 0 })
   const handleSelect = (object: WorkspaceObject) => {
     if (object === 'monitor') {
       void import('../components/desktop/DesktopEnvironment')
-      if (!sceneReady) {
+      if (!interactiveReady) {
         const rect = document.querySelector('.static-screen')?.getBoundingClientRect() ?? document.querySelector('.workspace-stage')?.getBoundingClientRect()
         if (rect) setDesktopOrigin({ top: Math.max(0, rect.top), right: Math.max(0, window.innerWidth - rect.right), bottom: Math.max(0, window.innerHeight - rect.bottom), left: Math.max(0, rect.left) })
       }
     }
     select(object)
-    if (!sceneReady) { if (object === 'monitor') setMode('desktop'); else if (object === 'keyboard') openApp('terminal') }
+    if (!interactiveReady) { if (object === 'monitor') setMode('desktop'); else if (object === 'keyboard') openApp('terminal') }
   }
   const handleFocusArrived = useCallback((object: WorkspaceObject, frame?: { top: number; right: number; bottom: number; left: number }) => {
     if (object === 'monitor') { if (frame) setDesktopOrigin(frame); setMode('desktop') }
@@ -81,10 +80,22 @@ export default function Home() {
     if (meta) meta.content = 'Explore DESK.OS, the interactive developer workspace of Adhi Keshavan B.'
   }, [])
 
+  useEffect(() => {
+    if (!showLoader) return
+    const timeout = window.setTimeout(() => { setSceneFailed(true); setSceneReady(false) }, 15000)
+    return () => window.clearTimeout(timeout)
+  }, [showLoader])
+
+  useEffect(() => {
+    if (allowScene) return
+    const timeout = window.setTimeout(() => setSceneReady(false), 0)
+    return () => window.clearTimeout(timeout)
+  }, [allowScene])
+
   return <div className="workspace-site" data-theme={theme}>
-    <a className="skip-link" href="#main">Skip to content</a>
-    <Navigation />
-    <main id="main">
+    <a className="skip-link" href="#main" tabIndex={showLoader ? -1 : undefined}>Skip to content</a>
+    <Navigation inert={showLoader} />
+    <main id="main" inert={showLoader}>
       <section id="home" className={`workspace-hero${selected ? ' workspace-hero--focused' : ''}`} aria-labelledby="hero-title">
         <div className="hero-studio-grid" aria-hidden="true" />
         <div className="hero-introduction">
@@ -96,12 +107,17 @@ export default function Home() {
           <div className="hero-actions"><button type="button" className="button button-primary" onClick={() => handleSelect('monitor')}>Enter Workspace <ArrowUpRight size={17} /></button><Link className="button button-secondary" to="/quick-view">Quick View</Link></div>
           <div className="hero-side-note"><span>MONITOR / DESK.OS &nbsp;·&nbsp; KEYBOARD / TERMINAL</span></div>
         </div>
-        <WorkspaceStage selected={selected} onSelect={handleSelect} onFocusArrived={handleFocusArrived} onReadyChange={setSceneReady} />
+        <WorkspaceStage selected={selected} onSelect={handleSelect} onFocusArrived={handleFocusArrived} allowScene={allowScene} ready={interactiveReady} onReady={handleSceneReady} onFailure={() => { setSceneFailed(true); setSceneReady(false) }} />
         <p className="sr-only">Select the monitor to enter DESK.OS, keyboard for the terminal, notebook for about and education, or phone for contact. Quick View provides direct access to every section.</p>
         <WorkspacePanel selected={selected === 'notebook' || selected === 'phone' ? selected : null} onClose={handleClear} />
         <div className="object-dock" aria-label="Explore workspace objects">{workspaceObjects.map(object => <button key={object.id} type="button" className={selected === object.id ? 'object-dock-item active' : 'object-dock-item'} onClick={() => handleSelect(object.id)} aria-pressed={selected === object.id}><span className="dock-number">{object.number}</span><span><strong>{object.title}</strong><small>{object.hint}</small></span><ArrowUpRight size={15} /></button>)}<button className="dock-overview" type="button" onClick={handleClear} disabled={!selected} aria-label="Return to workstation overview"><RotateCcw size={16} /><span>Overview</span></button></div>
       </section>
     </main>
     <Suspense fallback={null}><AnimatePresence>{mode === 'desktop' && <DesktopEnvironment origin={desktopOrigin} />}</AnimatePresence></Suspense>
+    <AnimatePresence initial={false}>{showLoader && <motion.div className="home-loading" role="status" aria-live="polite" aria-label="Preparing the interactive workspace" exit={{ opacity: 0 }} transition={{ duration: .55, ease: 'easeOut' }} key="workspace-loading">
+      <div className="home-loading__brand"><span className="home-loading__monogram">AK<span>.</span></span><span>DESK<span>.OS</span></span></div>
+      <div className="home-loading__content"><span className="home-loading__eyebrow">ADHI KESHAVAN B &nbsp;/&nbsp; PORTFOLIO</span><h2>Preparing the<br /><em>workspace<span>.</span></em></h2><p>Bringing the studio into focus.</p><div className="home-loading__track" aria-hidden="true"><span /></div><Link to="/quick-view">Open quick view <ArrowUpRight size={15} /></Link></div>
+      <span className="home-loading__footer">DESK.OS &nbsp; / &nbsp; INTERACTIVE WORKSPACE</span>
+    </motion.div>}</AnimatePresence>
   </div>
 }

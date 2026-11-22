@@ -30,7 +30,7 @@ function monitorFrame(camera: THREE.Camera, canvas: HTMLCanvasElement) {
   return { top, right: Math.max(0, window.innerWidth - right), bottom: Math.max(0, window.innerHeight - bottom), left }
 }
 
-export function CameraController({ selected, scrollFocus, pointer, reducedMotion, onFocusArrived }: { selected: WorkspaceObject | null; scrollFocus: WorkspaceObject | null; pointer: React.RefObject<{ x: number; y: number }>; reducedMotion: boolean; onFocusArrived: (object: WorkspaceObject, frame?: { top: number; right: number; bottom: number; left: number }) => void }) {
+export function CameraController({ selected, scrollFocus, pointer, reducedMotion, onFocusArrived, onOverviewReady }: { selected: WorkspaceObject | null; scrollFocus: WorkspaceObject | null; pointer: React.RefObject<{ x: number; y: number }>; reducedMotion: boolean; onFocusArrived: (object: WorkspaceObject, frame?: { top: number; right: number; bottom: number; left: number }) => void; onOverviewReady: () => void }) {
   const controls = useRef<OrbitControlsImpl>(null)
   const timeline = useRef<gsap.core.Timeline | null>(null)
   const moving = useRef(true)
@@ -51,13 +51,13 @@ export function CameraController({ selected, scrollFocus, pointer, reducedMotion
     const motion = gsap.timeline({ onUpdate: () => control.update(), onComplete: () => {
       moving.current = false
       if (selected) onFocusArrived(selected, selected === 'monitor' ? monitorFrame(camera, gl.domElement) : undefined)
-      else { setCameraPhase('overview'); control.enabled = true }
+      else { setCameraPhase('overview'); control.enabled = true; if (!scrollFocus) onOverviewReady() }
     } })
     motion.to(camera.position, { x: destination.position[0], y: destination.position[1], z: destination.position[2], duration, ease: 'power3.inOut' }, 0)
     motion.to(control.target, { x: destination.target[0], y: destination.target[1], z: destination.target[2], duration, ease: 'power3.inOut' }, 0)
     timeline.current = motion
     return () => { motion.kill(); timeline.current = null }
-  }, [camera, gl, selected, scrollFocus, size.width, reducedMotion, onFocusArrived, setCameraPhase])
+  }, [camera, gl, selected, scrollFocus, size.width, reducedMotion, onFocusArrived, onOverviewReady, setCameraPhase])
 
   useFrame((_, delta) => {
     const control = controls.current

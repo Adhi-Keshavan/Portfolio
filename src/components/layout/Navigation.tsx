@@ -5,9 +5,9 @@ import { person } from '../../data/portfolio'
 
 const items = [['About', 'about'], ['Projects', 'projects'], ['Skills', 'skills'], ['Contact', 'contact']] as const
 
-export function Navigation({ active = '', detail = false }: { active?: string; detail?: boolean }) {
+export function Navigation({ active = '', detail = false, inert = false }: { active?: string; detail?: boolean; inert?: boolean }) {
   const [open, setOpen] = useState(false)
-  return <header className="site-header">
+  return <header className="site-header" inert={inert}>
     <Link className="brand" to="/" aria-label="DESK.OS, home"><span className="brand-symbol">A<span>K</span><i>.</i></span><span className="brand-name">DESK<b>.OS</b></span></Link>
     <nav className={open ? 'nav-links nav-links--open' : 'nav-links'} aria-label="Primary navigation">
       {items.map(([label, id]) => <Link key={id} to={`/quick-view#${id}`} className={!detail && active === id ? 'nav-link nav-link--active' : 'nav-link'} onClick={() => setOpen(false)}>{label}</Link>)}
